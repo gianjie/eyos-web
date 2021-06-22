@@ -33,7 +33,7 @@ export default function Home({records}) {
       <Table
         headerHeight={40}
         width={920}
-        height={400}
+        height={600}
         rowHeight={40}
         rowGetter={({ index }) => records[index]}
         rowCount={records.length}
