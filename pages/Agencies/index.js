@@ -1,9 +1,8 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import NavHeader from '../components/Nav';
-import SideBar from '../components/SideBar';
-import Footer from '../components/Footer';
+import styles from '../../styles/Home.module.css'
+import NavHeader from '../../components/Nav';
+import SideBar from '../../components/SideBar';
+import Footer from '../../components/Footer';
 
 export default function Home() {
   return (
@@ -21,9 +20,9 @@ export default function Home() {
 
 
 
+
         </div>
       </main>
-
       <Footer/>
     </div>
   )
