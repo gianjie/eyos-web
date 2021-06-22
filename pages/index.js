@@ -56,7 +56,7 @@ export default function Home({records}) {
 export async function getStaticProps(context) {
   const {data} = await axios.get('https://tardjf.deta.dev/stores')
   const {records} = data
-  const filterRecords = records.filter(e => !e.IS_APPROVED)
+  const filterRecords = records.filter(e => !e.IS_APPROVED && e.STORE_NAME)
 
   return {
     props: { records: filterRecords.length }

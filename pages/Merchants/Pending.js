@@ -1,21 +1,77 @@
 import Head from 'next/head'
 import styles from '../../styles/Home.module.css'
 import CtaBtn from '../../components/CtaBtn'
-import axios from 'axios';
-import { useRouter } from 'next/router'
+import Loading from '../../components/Loading'
 
+import axios from 'axios';
+
+import { useRouter } from 'next/router'
+import { useState  } from 'react';
 import { Column, Table } from 'react-virtualized';
-import 'react-virtualized/styles.css';
 
 export default function Home({records}) {
+
+  const [newRecords, setNewRecords] = useState(records);
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter()
 
-  const onApprovalAll = () => {
-    console.log('approve all!')
+  const onApprovalAll = async() => {
+    if (window.confirm(`Are you sure you want to approve all ${newRecords.length} stores?`)) {
+      setLoading(true);
+
+      const allStoreIDs = []
+      newRecords.map(e => allStoreIDs.push(`${e.STORE_ID}`));
+
+      await axios.post(
+        `https://tardjf.deta.dev/verify/collection/approve`, 
+        allStoreIDs,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+  
+      const {data} = await axios.get('https://tardjf.deta.dev/stores')
+      const {records} = data
+      const filterRecords = records.filter(e => !e.IS_APPROVED && e.STORE_NAME);
+  
+      setNewRecords(filterRecords);
+  
+      setLoading(false);
+    }
   }
 
-  const onClickRow = (idx, {rowIndex, rowData}) => {
-    console.log('onClickRow', idx, rowIndex, rowData)
+  const editFetchNewRecords = async(STORE_ID, action) =>{
+    setLoading(true);
+
+    await axios.patch(`https://tardjf.deta.dev/verify/${STORE_ID}/${action}`);
+
+    const {data} = await axios.get('https://tardjf.deta.dev/stores')
+    const {records} = data
+    const filterRecords = records.filter(e => !e.IS_APPROVED && e.STORE_NAME);
+
+    setNewRecords(filterRecords);
+
+    setLoading(false);
+  };
+
+  const onClickRow = async (idx, {rowIndex, rowData}) => {
+    const {STORE_ID, STORE_NAME} = rowData
+    if (idx === 0) {
+      return
+    };
+
+    if(idx === 1){
+      if (window.confirm(`Are you sure you wish to reject this Store Name ${STORE_NAME}?`)) {
+        editFetchNewRecords(STORE_ID, 'deny');
+      }
+    } else {
+      if (window.confirm(`Are you sure you wish to approve this Store Name ${STORE_NAME}?`)) {
+        editFetchNewRecords(STORE_ID, 'approve');
+      }
+    }
   }
 
   return (
@@ -26,7 +82,7 @@ export default function Home({records}) {
       </Head>
    
       <div style={{display:'flex', flexDirection:"row", width: 920, justifyContent:"space-between", alignItems:'center', marginBottom:20}}>
-        <h4 className={styles.title} style={{marginTop: 0, margin:0}}>Stores Pending Approval</h4>
+        <h4 className={styles.title} style={{marginTop: 0, margin:0}}>{newRecords.length} Stores Pending Approval</h4>
         <CtaBtn title={'Approve All'} type={'btnApprove'} style={{width:120}} onClick={onApprovalAll}/>
       </div>
 
@@ -35,8 +91,8 @@ export default function Home({records}) {
         width={920}
         height={600}
         rowHeight={40}
-        rowGetter={({ index }) => records[index]}
-        rowCount={records.length}
+        rowGetter={({ index }) => newRecords[index]}
+        rowCount={newRecords.length}
         headerStyle={{
           fontWeight: 500,
           color: 'rgb(13, 12, 56)',
@@ -66,6 +122,7 @@ export default function Home({records}) {
         />
       </Table>
   
+      {loading && <Loading />}
     </div>
   )
 }
@@ -74,7 +131,7 @@ export default function Home({records}) {
 export async function getStaticProps(context) {
   const {data} = await axios.get('https://tardjf.deta.dev/stores')
   const {records} = data
-  const filterRecords = records.filter(e => !e.IS_APPROVED)
+  const filterRecords = records.filter(e => !e.IS_APPROVED && e.STORE_NAME)
 
   return {
     props: { records: filterRecords }
