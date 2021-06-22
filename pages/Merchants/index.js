@@ -20,7 +20,16 @@ export default function Home({records}) {
   const editFetchNewRecords = async(STORE_ID, action) =>{
     setLoading(true);
     
-    await axios.patch(`https://tardjf.deta.dev/verify/${STORE_ID}/${action}`);
+    await axios.patch(
+      `https://tardjf.deta.dev/verify/${STORE_ID}/${action}`,
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Origin": "*"
+        }
+      }
+    );
 
     const {data} = await axios.get('https://tardjf.deta.dev/stores')
     const {records} = data

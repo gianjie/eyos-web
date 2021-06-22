@@ -29,6 +29,7 @@ export default function Home({records}) {
         {
           headers: {
             'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*"
           }
         }
       );
