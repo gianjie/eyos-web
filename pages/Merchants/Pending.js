@@ -130,10 +130,12 @@ export default function Home({records}) {
       
       {selectStore && 
         <Store 
+          approve
           store={selectStore} 
           goBack={onGoBack}
           onClickRow={onClickRow}
-        />}
+        />
+      }
       
       {loading && <Loading />}
     </div>

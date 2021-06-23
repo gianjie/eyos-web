@@ -7,15 +7,16 @@ import axios from 'axios';
 import Loading from '../../components/Loading'
 import { useState  } from 'react';
 
-import { useRouter } from 'next/router'
+import Store from '../../components/Store'
 import { Column, Table } from 'react-virtualized';
 
 export default function Home({records}) {
 
   const [newRecords, setNewRecords] = useState(records);
   const [loading, setLoading] = useState(false);
+  const [selectStore, setSelectedStore] = useState(null);
 
-  const router = useRouter()
+  const onGoBack = () => setSelectedStore(null);
 
   const editFetchNewRecords = async(STORE_ID, action) =>{
     setLoading(true);
@@ -29,13 +30,14 @@ export default function Home({records}) {
     const filterRecords = records.filter(e => e.IS_APPROVED && e.STORE_NAME);
 
     setNewRecords(filterRecords);
-
+    setSelectedStore(null);
     setLoading(false);
   };
 
   const onClickRow = async (idx, {rowIndex, rowData}) => {
     const {STORE_ID, STORE_NAME} = rowData
     if (idx === 0) {
+      setSelectedStore(rowData)
       return
     };
 
@@ -107,6 +109,14 @@ export default function Home({records}) {
 
       </Table>
         
+      {selectStore && 
+        <Store 
+          store={selectStore} 
+          goBack={onGoBack}
+          onClickRow={onClickRow}
+        />
+      }
+      
       {loading && <Loading />}
 
     </div>

@@ -2,7 +2,7 @@ import styles from '../../styles/Home.module.css'
 import CtaBtn from '../CtaBtn'
 import Image from 'next/image'
 
-export default function Home({store, goBack, onClickRow}) {
+export default function Home({store, goBack, onClickRow, approve}) {
   const {
     STORE_NAME, 
     STORE_ADDRESS,
@@ -34,7 +34,7 @@ export default function Home({store, goBack, onClickRow}) {
         <h4 className={styles.title} style={{marginTop: 0, margin:0, fontWeight: 600}}>{STORE_NAME}</h4>
         <div style={{display:'flex', flexDirection:'row'}}>
           <CtaBtn title={'Go Back'} type={'btnWarning'} style={{width:100, marginRight: 10}} onClick={goBack}/>
-          <CtaBtn title={'Approve'} type={'btnApprove'} style={{width:100, marginRight: 10}} onClick={() => onClickRow(2, {rowData: store})}/>
+          {approve && <CtaBtn title={'Approve'} type={'btnApprove'} style={{width:100, marginRight: 10}} onClick={() => onClickRow(2, {rowData: store})}/>}
           <CtaBtn title={'Reject'} type={'btnReject'} style={{width:100}} onClick={() => onClickRow(1, {rowData: store})}/>
         </div>
       </div>
