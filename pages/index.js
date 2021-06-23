@@ -5,7 +5,8 @@ import CtaBtn from '../components/CtaBtn'
 import axios from 'axios';
 import { useRouter } from 'next/router'
 
-export default function Home({records}) {
+export default function Home({records, a, b}) {
+  console.log({a, b})
   const router = useRouter()
 
   const onClickViewNow = () => {
@@ -57,8 +58,8 @@ export async function getStaticProps(context) {
   const {data} = await axios.get('https://tardjf.deta.dev/stores')
   const {records} = data
   const filterRecords = records.filter(e => !e.IS_APPROVED && e.STORE_NAME)
-  console.log({records, filterRecords})
+
   return {
-    props: { records: filterRecords.length }
+    props: { records: filterRecords.length, a: records, b:filterRecords }
   }
 }
