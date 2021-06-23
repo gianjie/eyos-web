@@ -22,14 +22,6 @@ export default function Home({records}) {
     
     await axios.patch(
       `https://tardjf.deta.dev/verify/${STORE_ID}/${action}`,
-      {},
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin' : '*',
-          'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-        }
-      }
     );
 
     const {data} = await axios.get('https://tardjf.deta.dev/stores')
