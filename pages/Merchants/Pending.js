@@ -2,10 +2,10 @@ import Head from 'next/head'
 import styles from '../../styles/Home.module.css'
 import CtaBtn from '../../components/CtaBtn'
 import Loading from '../../components/Loading'
+import Store from '../../components/Store'
 
 import axios from 'axios';
 
-import { useRouter } from 'next/router'
 import { useState  } from 'react';
 import { Column, Table } from 'react-virtualized';
 
@@ -13,8 +13,9 @@ export default function Home({records}) {
 
   const [newRecords, setNewRecords] = useState(records);
   const [loading, setLoading] = useState(false);
+  const [selectStore, setSelectedStore] = useState(null);
 
-  const router = useRouter()
+  const onGoBack = () => setSelectedStore(null);
 
   const onApprovalAll = async() => {
     if (window.confirm(`Are you sure you want to approve all ${newRecords.length} stores?`)) {
@@ -57,13 +58,14 @@ export default function Home({records}) {
     const filterRecords = records.filter(e => !e.IS_APPROVED && e.STORE_NAME);
 
     setNewRecords(filterRecords);
-
+    setSelectedStore(null);
     setLoading(false);
   };
 
   const onClickRow = async (idx, {rowIndex, rowData}) => {
     const {STORE_ID, STORE_NAME} = rowData
     if (idx === 0) {
+      setSelectedStore(rowData)
       return
     };
 
@@ -125,7 +127,14 @@ export default function Home({records}) {
           cellRenderer={(e) => (<CtaBtn title={'Approve'} type={'btnApprove'} onClick={() => onClickRow(2, e)}/>)}
         />
       </Table>
-  
+      
+      {selectStore && 
+        <Store 
+          store={selectStore} 
+          goBack={onGoBack}
+          onClickRow={onClickRow}
+        />}
+      
       {loading && <Loading />}
     </div>
   )

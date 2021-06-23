@@ -9,6 +9,8 @@
   padding: 40px;
   width: 100%;
   position: relative;
+  /* background-color: ; */
+  /* background-color: rgba(251,251,251); */
 }
 
 .main {
@@ -31,6 +33,7 @@
   bottom: 0;
   background-color: white;
   box-shadow: 0px -4px 16px rgba(0,0,0,0.1);
+  z-index: 5;
 }
 
 .logo {
@@ -51,13 +54,14 @@
 .sideBarContainer {
   width: 225px; 
   height: 100%;
-  fill: #ffffff; 
+  background-color: #ffffff; 
   box-shadow: 4px 0px 10px rgba(0,0,0,0.05);
+  z-index: 4;
 }
 
 .navHeader {
   background-color: white;
-  z-index: 1;
+  z-index: 5;
   width: 100%;
   height: 80px;
   fill: #ffffff;
@@ -87,7 +91,7 @@
   display: flex;
   align-items: center;
   padding-left: 25px;
-  background-color: #ff6a0045;
+  background-color: #ff6a0036;
 }
 
 .activeMiniNav a {
@@ -121,6 +125,7 @@
   background-size: cover; 
   font-family: Poppins; 
   font-size: 16px; 
+  background-color: white;
 }
 
 .activeSideBar {
@@ -132,7 +137,7 @@
   background-size: cover; 
   font-family: Poppins; 
   font-size: 16px; 
-  background-color: #ff6a0021;
+  background-color: #ff6a000f;
 }
 
 .activeSideBar a {
@@ -248,4 +253,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.storeContainer {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-color: rgb(251,251,251);
+  z-index: 0;
+  padding: 40px;
 }
