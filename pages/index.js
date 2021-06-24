@@ -5,8 +5,8 @@ import CtaBtn from '../components/CtaBtn'
 import axios from 'axios';
 import { useRouter } from 'next/router'
 
-export default function Home({records, a, b}) {
-  console.log({a, b})
+export default function Home({records}) {
+
   const router = useRouter()
 
   const onClickViewNow = () => {
@@ -60,6 +60,6 @@ export async function getStaticProps(context) {
   const filterRecords = records.filter(e => !e.IS_APPROVED && e.STORE_NAME)
 
   return {
-    props: { records: filterRecords.length, a: records, b:filterRecords }
+    props: { records: filterRecords.length }
   }
 }
