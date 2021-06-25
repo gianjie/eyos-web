@@ -3,6 +3,7 @@ import CtaBtn from '../CtaBtn'
 import Image from 'next/image'
 
 export default function Home({store, goBack, onClickRow, approve}) {
+  console.log(store)
   const {
     STORE_NAME, 
     STORE_ADDRESS,
@@ -11,7 +12,8 @@ export default function Home({store, goBack, onClickRow, approve}) {
     STORE_TNC_ACCEPTED_DATETIME,
     IS_APPROVED,
     STORE_OWNER_NAME,
-    STORE_OWNER_MOBILE
+    STORE_OWNER_MOBILE,
+    STORE_RETAILER_NAME
   } = store;
 
   const storeInfo = {
@@ -24,7 +26,7 @@ export default function Home({store, goBack, onClickRow, approve}) {
   }
 
   const ownerInfo = {
-    STORE_OWNER_NAME,
+    STORE_RETAILER_NAME,
     STORE_OWNER_MOBILE
   }
 
@@ -72,9 +74,9 @@ const StoreInfoCard = ({data: {STORE_NAME, STORE_ADDRESS, STORE_TILL_COUNT, STOR
   </div>
 )
 
-const OwnerInfoCard = ({data: {STORE_OWNER_NAME, STORE_OWNER_MOBILE}}) => (
+const OwnerInfoCard = ({data: {STORE_RETAILER_NAME, STORE_OWNER_MOBILE}}) => (
   <div className={styles.card} style={{backgroundColor:"white", width: '48%', height: 200, marginRight: 0, justifyContent:'flex-start', padding: 20}}>
-    <RenderField title={'Owner Name:'} field={STORE_OWNER_NAME}/>
+    <RenderField title={'Owner Name:'} field={STORE_RETAILER_NAME}/>
     <RenderField title={'Owner Mobile:'} field={STORE_OWNER_MOBILE}/>
   </div>
 )
